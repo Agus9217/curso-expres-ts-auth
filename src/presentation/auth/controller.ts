@@ -22,7 +22,7 @@ export class AuthController {
     if (error) return res.status(400).send({ error });
 
     this.authService
-      .register(registerDto!)
+      .registerUser(registerDto!)
       .then((user) => res.send(user))
       .catch(err => this.handleError(err, res));
   };

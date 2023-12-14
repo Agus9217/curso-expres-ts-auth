@@ -1,20 +1,33 @@
+import { BcryptAdapter } from "../../config";
 import { UserModel } from "../../config/data";
-import { CustomError, RegisterUserDto } from "../../domain";
+import { CustomError, RegisterUserDto, UserEntity } from "../../domain";
 
 export class AuthService {
   constructor() {}
 
-  public async register(registerUserDto: RegisterUserDto) {
+  public async registerUser(registerUserDto: RegisterUserDto) {
     const existUser = await UserModel.findOne({ email: registerUserDto.email });
     if (existUser) throw CustomError.badRequest("Email already exist");
 
     try {
       const user = new UserModel(registerUserDto);
+
+      user.password = BcryptAdapter.hash(registerUserDto.password);
+
       await user.save();
 
-      return user;
+      const { password, ...userEntity } = UserEntity.fromObject(user);
+
+      return {
+        user: userEntity,
+        token: "ABC",
+      };
     } catch (error) {
       throw CustomError.internalServer(`${error}`);
     }
+  }
+
+  public async loginUser(loginUserDto: RegisterUserDto) {
+
   }
 }
