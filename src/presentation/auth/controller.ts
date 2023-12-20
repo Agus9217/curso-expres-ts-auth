@@ -24,7 +24,7 @@ export class AuthController {
     this.authService
       .registerUser(registerDto!)
       .then((user) => res.send(user))
-      .catch(err => this.handleError(err, res));
+      .catch((err) => this.handleError(err, res));
   };
 
   loginUser = (req: Request, res: Response) => {
@@ -37,10 +37,16 @@ export class AuthController {
     this.authService
       .loginUser(loginDto!)
       .then((user) => res.send(user))
-      .catch(err => this.handleError(err, res));
+      .catch((err) => this.handleError(err, res));
   };
 
   validateEmail = (req: Request, res: Response) => {
-    res.send("validateEmail");
+    const { token } = req.params;
+    // this.authService
+    //   .validateEmail(token)
+    //   .then(() => send("Email validated"))
+    //   .catch((err) => this.handleError(err, res));
+
+    res.send(token);
   };
 }
