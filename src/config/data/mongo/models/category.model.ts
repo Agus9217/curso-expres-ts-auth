@@ -4,6 +4,7 @@ const categorySchema = new Schema({
   name: {
     type: String,
     required: [true, "Name is requiered"],
+    unique: true,
   },
   available: {
     type: Boolean,
