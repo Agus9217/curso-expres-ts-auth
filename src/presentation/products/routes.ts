@@ -2,12 +2,14 @@ import { Router } from "express";
 import { ProductsController } from "./controller";
 import { AuthMiddleware } from "../middlewares/auth.middleware";
 import { CategoryService } from "../services/category.service";
+import { ProductService } from "../services";
+
 
 export class ProductsRoutes {
   static get routes(): Router {
     const router = Router();
-    const categoryService = new CategoryService()
-    const controller = new ProductsController(categoryService);
+    const productService = new ProductService()
+    const controller = new ProductsController(productService);
 
     // Definir las rutas
     router
