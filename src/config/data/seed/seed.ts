@@ -39,8 +39,8 @@ async function main() {
     seedData.products.map((product) => {
       return {
         ...product,
-        user: users[randomNumber(seedData.users.length) - 1]._id,
-        category: categories[randomNumber(seedData.categories.length) - 1]._id,
+        user: users[randomNumber(seedData.users.length - 1)]._id,
+        category: categories[randomNumber(seedData.categories.length - 1)]._id,
       };
     })
   );
