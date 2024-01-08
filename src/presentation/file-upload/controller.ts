@@ -4,9 +4,7 @@ import { FileUploadService } from "../services/file-upload.service";
 import { UploadedFile } from "express-fileupload";
 
 export class FileUploadController {
-  constructor(
-    private fileUploadService: FileUploadService
-  ) {}
+  constructor(private fileUploadService: FileUploadService) {}
 
   private handleError = (error: unknown, res: Response) => {
     if (error instanceof CustomError) {
@@ -17,35 +15,23 @@ export class FileUploadController {
     return res.status(500).send({ error: "Internal server error" });
   };
 
-
-
-
   uploadFile = (req: Request, res: Response) => {
-    const files = req.files
+    const type = req.params.type;
+    const file = req.body.files.at(0) as UploadedFile;
 
-    if (!req.files || Object.keys(req.files).length === 0) {
-      return res.status(400).send({ error: 'No files were selected' });
-       
-    }
-
-
-    const file = req.files.file
-
-    this.fileUploadService.uploadSingle(file as UploadedFile)
-    .then(uploaded => res.send(uploaded))
-    .catch(err => this.handleError(err, res))
-
-
-
+    this.fileUploadService
+      .uploadSingle(file, `uploads/${type}`)
+      .then((uploaded) => res.send(uploaded))
+      .catch((err) => this.handleError(err, res));
   };
 
-
-
-
-
-
-
   uploadMultipleFiles = (req: Request, res: Response) => {
-    res.send("Uploading MultipleFiles");
+    const type = req.params.type;
+    const files = req.body.files as UploadedFile[];
+
+    this.fileUploadService
+      .uploadMultiple(files, `uploads/${type}`)
+      .then((uploaded) => res.send(uploaded))
+      .catch((err) => this.handleError(err, res));
   };
 }
